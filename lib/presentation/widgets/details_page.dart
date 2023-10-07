@@ -30,6 +30,7 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
           cityListProvider.getCityList[cityListProvider.index].lat!.toDouble();
       var lon =
           cityListProvider.getCityList[cityListProvider.index].lon!.toDouble();
+      print(cityListProvider.index);
       realtimeProvider.callRealTimeForcastApi(lat, lon);
       hourlyForcastProvider.callHourlyForcastApi(lat, lon);
     });
@@ -39,27 +40,27 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
   @override
   Widget build(BuildContext context) {
     var time = DateTime.now();
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.blue, Colors.white]),
-        // image: DecorationImage(
-        //     image: AssetImage('images/clouds.gif'), fit: BoxFit.cover),
-      ),
-      child: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Consumer2<RealtimeProvider, HourlyForcastProvider>(
-                builder: (context, realtimeProvider, hourlyForcastprovider, _) {
-              if (realtimeProvider.isLoading ||
-                  realtimeProvider.responseModel == null ||
-                  hourlyForcastprovider.responseModel == null) {
-                return const CircularProgressIndicator();
-              } else {
-                return Column(
+    return Consumer2<RealtimeProvider, HourlyForcastProvider>(
+        builder: (context, realtimeProvider, hourlyForcastprovider, _) {
+      if (realtimeProvider.isLoading ||
+          realtimeProvider.responseModel == null ||
+          hourlyForcastprovider.responseModel == null) {
+        return const Center(child: CircularProgressIndicator());
+      } else {
+        return SingleChildScrollView(
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Colors.blue, Colors.white]),
+              // image: DecorationImage(
+              //     image: AssetImage('images/clouds.gif'), fit: BoxFit.cover),
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -104,7 +105,7 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                     ///this container for hourly frocast update
                     ///////////////////////////////////////////
                     Container(
-                      height: 200,
+                      height: MediaQuery.of(context).size.width * 0.6,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -112,10 +113,8 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                       ),
                       child: Padding(
                         padding:
-                            const EdgeInsets.only(left: 10, right: 10, top: 5),
+                            const EdgeInsets.only(left: 10, right: 10, top: 10),
                         child: Column(
-                          // mainAxisAlignment: MainAxisAlignment.start,
-                          // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Cloudy conditions rain expected arround 5PM',
@@ -151,7 +150,7 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                                       icon: Icons.cloud);
                                 },
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -161,7 +160,7 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                     /// this container block for show 3 days forcasts
                     ////////////////////////////////////////////////
                     Container(
-                      height: 200,
+                      height: MediaQuery.of(context).size.width * 0.5,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -169,7 +168,7 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                       ),
                       child: Padding(
                         padding:
-                            const EdgeInsets.only(left: 10, right: 10, top: 5),
+                            const EdgeInsets.only(left: 10, right: 10, top: 10),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,6 +188,7 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                             const Divider(),
                             Expanded(
                               child: ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemCount: hourlyForcastprovider.responseModel
                                     ?.forecast?.forecastday?.length,
                                 shrinkWrap: true,
@@ -229,7 +229,7 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                     ////////////////////////////////////////////
                     GridView(
                       shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
+                      physics: const NeverScrollableScrollPhysics(),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -282,14 +282,14 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                       style: TextStyle(
                           fontSize: MediaQuery.of(context).size.width * 0.06),
                     ),
-                    //const SizedBox(height: 10),
+                    const SizedBox(height: 10),
                   ],
-                );
-              }
-            }),
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        );
+      }
+    });
   }
 }

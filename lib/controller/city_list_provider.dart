@@ -9,7 +9,7 @@ class CityListProvider extends ChangeNotifier {
   bool get isLoading => _isloading;
   int index = -1;
 
-  List<CityListModel> _cityList = [];
+  final List<CityListModel> _cityList = [];
   List<CityListModel> get getCityList => _cityList;
 
   final List<CityListModel> _savedLocation = [];
@@ -27,6 +27,7 @@ class CityListProvider extends ChangeNotifier {
 
   void addToSavedList() {
     _savedLocation.add(cityListModel!);
+    print(cityListModel!.name);
   }
 
   void callCityListApi(String cityName) async {

@@ -23,34 +23,39 @@ class ThreeDaysForcast extends StatelessWidget {
               style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width * 0.05)),
         ),
-        const SizedBox(width: 30),
         Column(
           children: [
             const Icon(Icons.cloud),
             Text(
               '$chanceOfRain %',
               style:
-                  TextStyle(fontSize: MediaQuery.of(context).size.width * 0.03),
+                  TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04),
             )
           ],
         ),
         const SizedBox(width: 10),
-        Text('$minTemp °',
-            style:
-                TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04)),
-        const SizedBox(width: 5),
-        Container(
-          height: 10,
-          width: MediaQuery.of(context).size.width * 0.2,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.red,
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text('$minTemp °',
+                  style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.04)),
+              Container(
+                height: 10,
+                width: MediaQuery.of(context).size.width * 0.3,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.red,
+                ),
+              ),
+              Text('$maxTemp °',
+                  style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.04)),
+            ],
           ),
         ),
-        const SizedBox(width: 5),
-        Text('$maxTemp °',
-            style:
-                TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04)),
+        const SizedBox(height: 10),
       ],
     );
   }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weather/controller/city_list_provider.dart';
 
 class SavedLocation extends StatelessWidget {
+  final int index;
   final String cityNmae;
   final String time;
   final String condition;
@@ -8,7 +11,8 @@ class SavedLocation extends StatelessWidget {
   final dynamic tempH;
   final dynamic tempL;
   const SavedLocation(
-      {required this.cityNmae,
+      {required this.index,
+      required this.cityNmae,
       required this.time,
       required this.condition,
       required this.temp,
@@ -18,11 +22,13 @@ class SavedLocation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cityProvider = Provider.of<CityListProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, '/detailsPage');
+          cityProvider.index = index;
+          Navigator.pushReplacementNamed(context, '/homePage');
         },
         child: Container(
           height: 120,
