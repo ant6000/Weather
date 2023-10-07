@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/controller/city_list_provider.dart';
 import 'package:weather/controller/hourly_forcast_provider.dart';
-import 'package:weather/presentation/pages/home_page.dart';
+import 'package:weather/presentation/widgets/details_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -108,8 +108,9 @@ class _SearchPageState extends State<SearchPage> {
                             cityProvider1.index = index;
                             showModalBottomSheet(
                               shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(20))),
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20)),
+                              ),
                               isScrollControlled: true,
                               useSafeArea: true,
                               context: context,
@@ -154,11 +155,14 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget showbottomsheet() {
-    return Stack(
+    return DraggableScrollableSheet(
+      initialChildSize: 1,
+      builder: (context, scrollController) {
+        return Stack(
       alignment: Alignment.topCenter,
       children: [
         const Padding(
-          padding: EdgeInsets.symmetric(vertical: 40),
+          padding: EdgeInsets.only(top: 40),
           child: DisplayWeatherData(),
         ),
         Padding(
@@ -172,6 +176,8 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       ],
+    );
+      },
     );
   }
 }

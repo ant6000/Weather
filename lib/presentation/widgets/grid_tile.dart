@@ -30,11 +30,17 @@ class Tile extends StatelessWidget {
                   icon,
                   size: 30,
                 ),
-                Text(title, style: const TextStyle(fontSize: 20)),
+                Text(title,
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.05)),
               ],
             ),
-            Text(data, style: const TextStyle(fontSize: 50)),
-            Text(bottomText, style: const TextStyle(fontSize: 18)),
+            Text(data,
+                style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * 0.08)),
+            Text(bottomText,
+                style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * 0.04)),
           ],
         ),
       ),
