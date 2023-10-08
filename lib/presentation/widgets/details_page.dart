@@ -26,15 +26,33 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
       CityListProvider cityListProvider =
           Provider.of<CityListProvider>(context, listen: false);
 
-      var lat =
-          cityListProvider.getCityList[cityListProvider.index].lat!.toDouble();
-      var lon =
-          cityListProvider.getCityList[cityListProvider.index].lon!.toDouble();
-      print(cityListProvider.index);
-      realtimeProvider.callRealTimeForcastApi(lat, lon);
-      hourlyForcastProvider.callHourlyForcastApi(lat, lon);
+      if (cityListProvider.getCityList.isEmpty) {
+        String city = cityListProvider
+            .getSavedLocation[cityListProvider.index].name
+            .toString();
+        realtimeProvider.callRealTimeForcastApi(city);
+        hourlyForcastProvider.callHourlyForcastApi(city);
+      } else {
+        String city = cityListProvider.getCityList[cityListProvider.index].name
+            .toString();
+        realtimeProvider.callRealTimeForcastApi(city);
+        hourlyForcastProvider.callHourlyForcastApi(city);
+      }
     });
     super.initState();
+  }
+
+  List<String> getNext24Hours() {
+    final currentTime = DateTime.now();
+    final formatter = DateFormat('h a');
+    final List<String> hoursList = [];
+
+    for (int i = 0; i < 24; i++) {
+      final nextHour = currentTime.add(Duration(hours: i));
+      final formattedHour = formatter.format(nextHour);
+      hoursList.add(formattedHour);
+    }
+    return hoursList;
   }
 
   @override
@@ -117,37 +135,52 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                         child: Column(
                           children: [
                             Text(
-                              'Cloudy conditions rain expected arround 5PM',
+                              'Cloudy conditions rain expected around 5PM',
                               style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.05),
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.05,
+                              ),
                             ),
                             const Divider(),
                             Expanded(
                               child: ListView.builder(
-                                itemCount: 26,
+                                itemCount:
+                                    24, // Change this to 24 to include all 24 hours
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
-                                  final formattedHour = DateFormat('h').format(
-                                      time.add(Duration(hours: index - 12)));
+                                  final formattedHour = getNext24Hours()[index]; // Get individual hour
+                                  final parsedTime = DateFormat('h a').parse(formattedHour);
+                                  final hour = parsedTime.hour; // This will give you the hour component as an integer (0-23)
+                                  var hourlyWeather;
+                                  if(formattedHour == '12 AM' && index > 0){
+                                   hourlyWeather=   hourlyForcastprovider
+                                            .responseModel
+                                            ?.forecast
+                                            ?.forecastday?[0]
+                                            .hour?[hour]
+                                            .tempC;
+                                  }else{
+                                    hourlyWeather=  hourlyForcastprovider
+                                            .responseModel
+                                            ?.forecast
+                                            ?.forecastday?[0]
+                                            .hour?[hour]
+                                            .tempC;
+                                  }
                                   return HourlyForcast(
-                                      time: '${formattedHour}PM ',
-                                      temp: hourlyForcastprovider
-                                              .responseModel
-                                              ?.forecast
-                                              ?.forecastday?[0]
-                                              .hour?[int.parse(formattedHour)]
-                                              .tempC ??
-                                          0.0,
-                                      chanceOfRain: hourlyForcastprovider
-                                              .responseModel
-                                              ?.forecast
-                                              ?.forecastday?[0]
-                                              .hour?[int.parse(formattedHour)]
-                                              .cloud ??
-                                          0,
-                                      icon: Icons.cloud);
+                                    time: formattedHour,
+                                    temp: hourlyWeather ??
+                                        0.0,
+                                    chanceOfRain: hourlyForcastprovider
+                                            .responseModel
+                                            ?.forecast
+                                            ?.forecastday?[0]
+                                            .hour?[hour]
+                                            .cloud ??
+                                        0,
+                                    icon: Icons.thunderstorm_rounded,
+                                  );
                                 },
                               ),
                             ),
@@ -155,6 +188,7 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                         ),
                       ),
                     ),
+
                     const SizedBox(height: 20),
                     //////////////////////////////////////////////////
                     /// this container block for show 3 days forcasts
@@ -214,7 +248,12 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                                             .day
                                             ?.maxtempC ??
                                         0.0,
-                                    chanceOfRain: 50,
+                                    chanceOfRain: hourlyForcastprovider
+                                        .responseModel
+                                        ?.forecast
+                                        ?.forecastday?[index]
+                                        .day
+                                        ?.dailyChanceOfRain,
                                   );
                                 },
                               ),
@@ -280,7 +319,7 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                     Text(
                       'Weather for ${realtimeProvider.responseModel!.location!.name.toString()} ${realtimeProvider.responseModel!.location!.region.toString()},${realtimeProvider.responseModel!.location!.country.toString()}',
                       style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width * 0.06),
+                          fontSize: MediaQuery.of(context).size.width * 0.05),
                     ),
                     const SizedBox(height: 10),
                   ],

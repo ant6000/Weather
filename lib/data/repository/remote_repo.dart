@@ -4,10 +4,10 @@ import 'package:http/http.dart';
 class RemoteRepo {
   // this method is for getting real time weather update
   static Future<Response?> getRealtimeWeatherData(
-      double lat, double lon) async {
+      String city) async {
     try {
       final url = Uri.parse(
-          'https://weatherapi-com.p.rapidapi.com/current.json?q=$lat,$lon');
+          'https://weatherapi-com.p.rapidapi.com/current.json?q=$city');
       Map<String, String> header = {
         'X-RapidAPI-Key': 'a2b133090bmsh71717a3b54feb8ap153d28jsncba845fef55e',
         'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
@@ -23,10 +23,10 @@ class RemoteRepo {
 
   // this method is for getting houlrly weather forcast
   static Future<Response?> getHourlyWeatherForcast(
-      double lat, double lon, int days) async {
+      String city, int days) async {
     try {
       final url = Uri.parse(
-          'https://weatherapi-com.p.rapidapi.com/forecast.json?q=$lat,$lon&days=$days');
+          'https://weatherapi-com.p.rapidapi.com/forecast.json?q=$city&days=$days');
       Map<String, String> header = {
         'X-RapidAPI-Key': 'a2b133090bmsh71717a3b54feb8ap153d28jsncba845fef55e',
         'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'

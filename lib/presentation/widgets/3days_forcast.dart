@@ -24,12 +24,14 @@ class ThreeDaysForcast extends StatelessWidget {
                   fontSize: MediaQuery.of(context).size.width * 0.05)),
         ),
         Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Icon(Icons.cloud),
+            const Icon(Icons.thunderstorm_rounded,size: 30),
             Text(
               '$chanceOfRain %',
               style:
-                  TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04),
+                  TextStyle(fontSize: MediaQuery.of(context).size.width * 0.03),
             )
           ],
         ),

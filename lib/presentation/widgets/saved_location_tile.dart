@@ -4,7 +4,7 @@ import 'package:weather/controller/city_list_provider.dart';
 
 class SavedLocation extends StatelessWidget {
   final int index;
-  final String cityNmae;
+  final String cityName;
   final String time;
   final String condition;
   final dynamic temp;
@@ -12,7 +12,7 @@ class SavedLocation extends StatelessWidget {
   final dynamic tempL;
   const SavedLocation(
       {required this.index,
-      required this.cityNmae,
+      required this.cityName,
       required this.time,
       required this.condition,
       required this.temp,
@@ -48,7 +48,7 @@ class SavedLocation extends StatelessWidget {
                       height: 70,
                       child: Column(
                         children: [
-                          Text(cityNmae, style: const TextStyle(fontSize: 25)),
+                          Text(cityName, style: const TextStyle(fontSize: 25)),
                           Text(time, style: const TextStyle(fontSize: 15)),
                         ],
                       ),

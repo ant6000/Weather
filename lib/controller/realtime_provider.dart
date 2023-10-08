@@ -11,10 +11,10 @@ class RealtimeProvider extends ChangeNotifier {
   bool _isloading = false;
   bool get isLoading => _isloading;
 
-  void callRealTimeForcastApi(double lat, double lon) async {
+  void callRealTimeForcastApi(String city) async {
       _isloading = true;
       notifyListeners();
-      final response = await RemoteRepo.getRealtimeWeatherData(lat, lon);
+      final response = await RemoteRepo.getRealtimeWeatherData(city);
       if (response!.statusCode == 200) {
         var data = json.decode(response.body);
         _responseModel = RealTimeResponseModel.fromJson(data);

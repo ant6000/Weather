@@ -25,11 +25,6 @@ class CityListProvider extends ChangeNotifier {
     }
   }
 
-  void addToSavedList() {
-    _savedLocation.add(cityListModel!);
-    print(cityListModel!.name);
-  }
-
   void callCityListApi(String cityName) async {
     _isloading = true;
     _cityList.clear();
@@ -54,4 +49,44 @@ class CityListProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void addToSavedList() {
+    _savedLocation.add(_cityList[index]);
+    notifyListeners();
+  }
+
+  // Future<void> callCityList(String cityName) async {
+  //   try {
+  //     _isloading = true;
+  //     _cityList.clear();
+  //     notifyListeners();
+
+  //     final response = await RemoteRepo.getCityList(cityName);
+  //     if (response != null) {
+  //       if (response.statusCode == 200) {
+  //         final data = json.decode(response.body);
+  //         if (data.toString() == '[]') {
+  //           _isloading = false;
+  //           notifyListeners();
+  //         } else {
+  //           final List<dynamic> newCitylist = data;
+  //           for (var element in newCitylist) {
+  //             cityListModel = CityListModel.fromJson(element);
+  //             _cityList.add(cityListModel!);
+  //           }
+  //         }
+  //       } else {
+  //         _isloading = false;
+  //         notifyListeners();
+  //       }
+  //     } else {
+  //       _isloading = false;
+  //       notifyListeners();
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //     _isloading = false;
+  //     notifyListeners();
+  //   }
+  // }
 }

@@ -10,12 +10,14 @@ class HourlyForcast extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(time.toString(), style:  TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05)),
-        Icon(icon),
+        Icon(icon,size: 30),
         Text('$chanceOfRain %',style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),),
         Text('${temp.toString()}°', style:  TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05)),
-        const SizedBox(width: 70),
+        const SizedBox(width: 100),
       ],
     );
   }

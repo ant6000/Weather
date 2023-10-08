@@ -9,10 +9,10 @@ class HourlyForcastProvider extends ChangeNotifier {
   bool _isloading = false;
   bool get isLoading => _isloading;
 
-  void callHourlyForcastApi(double lat, double lon) async {
+  void callHourlyForcastApi(String city) async {
     _isloading = true;
     notifyListeners();
-    final response = await RemoteRepo.getHourlyWeatherForcast(lat, lon, 3);
+    final response = await RemoteRepo.getHourlyWeatherForcast(city, 3);
     if (response!.statusCode == 200) {
       var data = json.decode(response.body);
       responseModel = HourlyForcastModel.fromJson(data);

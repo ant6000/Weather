@@ -13,52 +13,39 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
-  //     HourlyForcastProvider forcastProvider =
-  //         Provider.of<HourlyForcastProvider>(context, listen: false);
-  //     CityListProvider cityListProvider =
-  //         Provider.of<CityListProvider>(context, listen: false);
-  //     RealtimeProvider realtimeProvider =
-  //         Provider.of<RealtimeProvider>(context, listen: false);
-  //     // for (var element in cityListProvider.getCityList) {
-  //     //   forcastProvider.callHourlyForcastApi(
-  //     //       element.lat!.toDouble(), element.lon!.toDouble());
-  //     // }
-
-  //     // var lat =
-  //     //     cityListProvider.getCityList[cityListProvider.index].lat!.toDouble();
-  //     // var lon =
-  //     //     cityListProvider.getCityList[cityListProvider.index].lon!.toDouble();
-  //     // realtimeProvider.callRealTimeForcastApi(lat, lon);
-  //     // forcastProvider.callHourlyForcastApi(lat, lon);
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
+      // RealtimeProvider realtimeProvider =
+      //     Provider.of<RealtimeProvider>(context, listen: false);
+      // CityListProvider cityListProvider =
+      //     Provider.of<CityListProvider>(context, listen: false);
+      // for (var element in cityListProvider.getCityList) {
+      //   realtimeProvider.callRealTimeForcastApi(element.name.toString());
+      // }
+      // realtimeProvider.callRealTimeForcastApi(lat, lon);
+    });
+  }
 
   final cityNameInputController = TextEditingController();
   var time = DateTime.now().hour;
 
   @override
   Widget build(BuildContext context) {
-    final cityListProvider =
-        Provider.of<CityListProvider>(context, listen: false);
-    final HourlyForcastProvider forcastProvider =
-        Provider.of<HourlyForcastProvider>(context, listen: false);
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        actions: const [
-          Icon(Icons.settings_rounded),
-          SizedBox(width: 20),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child:
-            Consumer<CityListProvider>(builder: (context, citylistProvider, _) {
-          return SingleChildScrollView(
+    return Consumer2<CityListProvider, HourlyForcastProvider>(
+        builder: (context, cityListProvider, forcastProvider, _) {
+      return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          actions: const [
+            Icon(Icons.settings_rounded),
+            SizedBox(width: 20),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -94,7 +81,7 @@ class _SearchPageState extends State<SearchPage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: ListView.builder(
-                    itemCount: citylistProvider.getCityList.length,
+                    itemCount: cityListProvider.getCityList.length,
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
@@ -107,9 +94,9 @@ class _SearchPageState extends State<SearchPage> {
                           hoverColor: Colors.green,
                           tileColor: Colors.black,
                           title: Text(
-                              '${citylistProvider.getCityList[index].name.toString()} ${citylistProvider.getCityList[index].region.toString()} ${citylistProvider.getCityList[index].country.toString()}'),
+                              '${cityListProvider.getCityList[index].name.toString()} ${cityListProvider.getCityList[index].region.toString()} ${cityListProvider.getCityList[index].country.toString()}'),
                           onTap: () {
-                            citylistProvider.index = index;
+                            cityListProvider.index = index;
                             showModalBottomSheet(
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
@@ -119,7 +106,7 @@ class _SearchPageState extends State<SearchPage> {
                               useSafeArea: true,
                               context: context,
                               builder: (context) {
-                                return showbottomsheet(citylistProvider);
+                                return showbottomsheet(cityListProvider);
                               },
                             );
                           },
@@ -135,12 +122,12 @@ class _SearchPageState extends State<SearchPage> {
                   scrollDirection: Axis.vertical,
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: citylistProvider.showlist(),
+                  itemCount: cityListProvider.showlist(),
                   itemBuilder: (context, index) {
                     return SavedLocation(
                       index: index,
-                      cityNmae:
-                          '${citylistProvider.getSavedLocation[citylistProvider.index].name}',
+                      cityName:
+                          '${cityListProvider.getSavedLocation[index].name}',
                       condition:
                           '${forcastProvider.responseModel!.current!.condition!.text}',
                       temp: '${forcastProvider.responseModel!.current!.tempC}',
@@ -155,10 +142,10 @@ class _SearchPageState extends State<SearchPage> {
                 )
               ],
             ),
-          );
-        }),
-      ),
-    );
+          ),
+        ),
+      );
+    });
   }
 
   Widget showbottomsheet(CityListProvider cityListProvider) {
