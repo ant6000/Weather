@@ -28,7 +28,7 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
 
       if (cityListProvider.getCityList.isEmpty) {
         String city = cityListProvider
-            .getSavedLocation[cityListProvider.index].name
+            .getSavedLocation[cityListProvider.index].location!.name
             .toString();
         realtimeProvider.callRealTimeForcastApi(city);
         hourlyForcastProvider.callHourlyForcastApi(city);
@@ -55,6 +55,25 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
     return hoursList;
   }
 
+  final List<Gradient> bgColors = [
+    const LinearGradient(
+      colors: [Colors.black, Colors.yellow],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    const LinearGradient(
+      colors: [Colors.red, Colors.blue],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    const LinearGradient(
+      colors: [Colors.purple, Colors.white],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+
+  ];
+
   @override
   Widget build(BuildContext context) {
     var time = DateTime.now();
@@ -71,7 +90,7 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Colors.blue, Colors.white]),
+                  colors: [Colors.blue, Colors.white]) 
               // image: DecorationImage(
               //     image: AssetImage('images/clouds.gif'), fit: BoxFit.cover),
             ),
@@ -149,29 +168,31 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
-                                  final formattedHour = getNext24Hours()[index]; // Get individual hour
-                                  final parsedTime = DateFormat('h a').parse(formattedHour);
-                                  final hour = parsedTime.hour; // This will give you the hour component as an integer (0-23)
-                                  var hourlyWeather;
-                                  if(formattedHour == '12 AM' && index > 0){
-                                   hourlyWeather=   hourlyForcastprovider
-                                            .responseModel
-                                            ?.forecast
-                                            ?.forecastday?[0]
-                                            .hour?[hour]
-                                            .tempC;
-                                  }else{
-                                    hourlyWeather=  hourlyForcastprovider
-                                            .responseModel
-                                            ?.forecast
-                                            ?.forecastday?[0]
-                                            .hour?[hour]
-                                            .tempC;
+                                  final formattedHour = getNext24Hours()[
+                                      index]; // Get individual hour
+                                  final parsedTime =
+                                      DateFormat('h a').parse(formattedHour);
+                                  final hour = parsedTime
+                                      .hour; // This will give you the hour component as an integer (0-23)
+                                  double? hourlyWeather;
+                                  if (formattedHour == '12 AM' && index > 0) {
+                                    hourlyWeather = hourlyForcastprovider
+                                        .responseModel
+                                        ?.forecast
+                                        ?.forecastday?[0]
+                                        .hour?[hour]
+                                        .tempC;
+                                  } else {
+                                    hourlyWeather = hourlyForcastprovider
+                                        .responseModel
+                                        ?.forecast
+                                        ?.forecastday?[0]
+                                        .hour?[hour]
+                                        .tempC;
                                   }
                                   return HourlyForcast(
                                     time: formattedHour,
-                                    temp: hourlyWeather ??
-                                        0.0,
+                                    temp: hourlyWeather ?? 0.0,
                                     chanceOfRain: hourlyForcastprovider
                                             .responseModel
                                             ?.forecast

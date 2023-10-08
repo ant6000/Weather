@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:weather/data/model/city_list_response_model.dart';
+import 'package:weather/data/model/forcast_response_model.dart';
+import 'package:weather/data/model/realtime_response_model.dart';
+import 'package:weather/data/model/saved_tile_model.dart';
 import 'package:weather/data/repository/remote_repo.dart';
 
 class CityListProvider extends ChangeNotifier {
@@ -12,8 +15,8 @@ class CityListProvider extends ChangeNotifier {
   final List<CityListModel> _cityList = [];
   List<CityListModel> get getCityList => _cityList;
 
-  final List<CityListModel> _savedLocation = [];
-  List<CityListModel> get getSavedLocation => _savedLocation;
+  final List<HourlyForcastModel> _savedLocation = [];
+  List<HourlyForcastModel> get getSavedLocation => _savedLocation;
 
   bool savedLocatonListVisible = true;
 
@@ -50,43 +53,12 @@ class CityListProvider extends ChangeNotifier {
     }
   }
 
-  void addToSavedList() {
-    _savedLocation.add(_cityList[index]);
+  void addToSavedList(HourlyForcastModel? model) {
+    if(model != null){
+    _savedLocation.add(model);
     notifyListeners();
+    }
   }
 
-  // Future<void> callCityList(String cityName) async {
-  //   try {
-  //     _isloading = true;
-  //     _cityList.clear();
-  //     notifyListeners();
 
-  //     final response = await RemoteRepo.getCityList(cityName);
-  //     if (response != null) {
-  //       if (response.statusCode == 200) {
-  //         final data = json.decode(response.body);
-  //         if (data.toString() == '[]') {
-  //           _isloading = false;
-  //           notifyListeners();
-  //         } else {
-  //           final List<dynamic> newCitylist = data;
-  //           for (var element in newCitylist) {
-  //             cityListModel = CityListModel.fromJson(element);
-  //             _cityList.add(cityListModel!);
-  //           }
-  //         }
-  //       } else {
-  //         _isloading = false;
-  //         notifyListeners();
-  //       }
-  //     } else {
-  //       _isloading = false;
-  //       notifyListeners();
-  //     }
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //     _isloading = false;
-  //     notifyListeners();
-  //   }
-  // }
 }

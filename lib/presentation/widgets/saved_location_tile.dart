@@ -47,6 +47,7 @@ class SavedLocation extends StatelessWidget {
                     SizedBox(
                       height: 70,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(cityName, style: const TextStyle(fontSize: 25)),
                           Text(time, style: const TextStyle(fontSize: 15)),
