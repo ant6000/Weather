@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/controller/city_list_provider.dart';
 import 'package:weather/controller/hourly_forcast_provider.dart';
-import 'package:weather/controller/realtime_provider.dart';
 import 'package:weather/presentation/widgets/details_page.dart';
 import 'package:weather/presentation/widgets/saved_location_tile.dart';
 
@@ -34,8 +33,8 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<CityListProvider, HourlyForcastProvider, RealtimeProvider>(
-        builder: (context, cityListProvider, forcastProvider, realtimeProvider, _) {
+    return Consumer2<CityListProvider, HourlyForcastProvider>(
+        builder: (context, cityListProvider, forcastProvider, _) {
       return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -107,7 +106,8 @@ class _SearchPageState extends State<SearchPage> {
                               useSafeArea: true,
                               context: context,
                               builder: (context) {
-                                return showbottomsheet(cityListProvider,realtimeProvider,forcastProvider );
+                                return showbottomsheet(
+                                    cityListProvider, forcastProvider);
                               },
                             );
                           },
@@ -127,17 +127,21 @@ class _SearchPageState extends State<SearchPage> {
                   itemBuilder: (context, index) {
                     return SavedLocation(
                       index: index,
-                      temp: cityListProvider.getSavedLocation[index].current!.tempC,
-                      cityName:
-                          cityListProvider.getSavedLocation[index].location!.name.toString(),
-                      condition:
-                          cityListProvider.getSavedLocation[index].current!.condition!.text.toString(),
-                      tempH:
-                          cityListProvider.getSavedLocation[index].forecast!.forecastday![0].day!.maxtempC,
-                      tempL:
-                          cityListProvider.getSavedLocation[index].forecast!.forecastday![0].day!.mintempC,
-                      time:
-                          cityListProvider.getSavedLocation[index].location!.localtime.toString(),
+                      temp: cityListProvider
+                          .getSavedLocation[index].current!.tempC,
+                      cityName: cityListProvider
+                          .getSavedLocation[index].location!.name
+                          .toString(),
+                      condition: cityListProvider
+                          .getSavedLocation[index].current!.condition!.text
+                          .toString(),
+                      tempH: cityListProvider.getSavedLocation[index].forecast!
+                          .forecastday![0].day!.maxtempC,
+                      tempL: cityListProvider.getSavedLocation[index].forecast!
+                          .forecastday![0].day!.mintempC,
+                      time: cityListProvider
+                          .getSavedLocation[index].location!.localtime
+                          .toString(),
                     );
                   },
                 )
@@ -149,7 +153,8 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  Widget showbottomsheet(CityListProvider cityListProvider,  RealtimeProvider realtimeProvider, HourlyForcastProvider hourlyForcastProvider) {
+  Widget showbottomsheet(CityListProvider cityListProvider,
+      HourlyForcastProvider hourlyForcastProvider) {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -170,7 +175,8 @@ class _SearchPageState extends State<SearchPage> {
                   child: const Text('Cancle')),
               TextButton(
                   onPressed: () {
-                    cityListProvider.addToSavedList(hourlyForcastProvider.responseModel);
+                    cityListProvider
+                        .addToSavedList(hourlyForcastProvider.responseModel);
                     cityListProvider.getCityList.clear();
                     cityNameInputController.clear();
                     Navigator.pop(context);

@@ -71,7 +71,6 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     ),
-
   ];
 
   @override
@@ -87,13 +86,13 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
         return SingleChildScrollView(
           child: Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Colors.blue, Colors.white]) 
-              // image: DecorationImage(
-              //     image: AssetImage('images/clouds.gif'), fit: BoxFit.cover),
-            ),
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Colors.blue, Colors.white])
+                // image: DecorationImage(
+                //     image: AssetImage('images/clouds.gif'), fit: BoxFit.cover),
+                ),
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -175,13 +174,20 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                                   final hour = parsedTime
                                       .hour; // This will give you the hour component as an integer (0-23)
                                   double? hourlyWeather;
+                                  double? chancesOfRain;
                                   if (formattedHour == '12 AM' && index > 0) {
                                     hourlyWeather = hourlyForcastprovider
                                         .responseModel
                                         ?.forecast
-                                        ?.forecastday?[0]
+                                        ?.forecastday?[1]
                                         .hour?[hour]
                                         .tempC;
+                                    chancesOfRain = hourlyForcastprovider
+                                            .responseModel
+                                            ?.forecast
+                                            ?.forecastday?[1]
+                                            .hour?[hour]
+                                            .cloud;
                                   } else {
                                     hourlyWeather = hourlyForcastprovider
                                         .responseModel
@@ -189,17 +195,17 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                                         ?.forecastday?[0]
                                         .hour?[hour]
                                         .tempC;
-                                  }
-                                  return HourlyForcast(
-                                    time: formattedHour,
-                                    temp: hourlyWeather ?? 0.0,
-                                    chanceOfRain: hourlyForcastprovider
+                                    chancesOfRain = hourlyForcastprovider
                                             .responseModel
                                             ?.forecast
                                             ?.forecastday?[0]
                                             .hour?[hour]
-                                            .cloud ??
-                                        0,
+                                            .chanceOfRain;
+                                  }
+                                  return HourlyForcast(
+                                    time: formattedHour,
+                                    temp: hourlyWeather ?? 0.0,
+                                    chanceOfRain: chancesOfRain ?? 0.0,
                                     icon: Icons.thunderstorm_rounded,
                                   );
                                 },
