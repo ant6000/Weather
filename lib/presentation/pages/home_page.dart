@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather/presentation/widgets/details_page.dart';
 
 class HomePage extends StatefulWidget {
+  static const String routeName = '/homePage';
   const HomePage({super.key});
 
   @override

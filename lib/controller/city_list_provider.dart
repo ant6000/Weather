@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weather/controller/hourly_forcast_provider.dart';
 import 'package:weather/data/model/city_list_response_model.dart';
 import 'package:weather/data/model/forcast_response_model.dart';
 import 'package:weather/data/repository/remote_repo.dart';
+import 'package:weather/presentation/widgets/saved_location_tile.dart';
 
 class CityListProvider extends ChangeNotifier {
   CityListModel? cityListModel;
+  HourlyForcastModel? responseModel;
   bool _isloading = false;
   bool get isLoading => _isloading;
   int index = -1;
@@ -14,10 +17,10 @@ class CityListProvider extends ChangeNotifier {
   final List<CityListModel> _cityList = [];
   List<CityListModel> get getCityList => _cityList;
 
-  final List<HourlyForcastModel> _savedLocation = [];
+   List<HourlyForcastModel> _savedLocation = [];
   List<HourlyForcastModel> get getSavedLocation => _savedLocation;
 
-  List<String> cityNames = [];
+  List<HourlyForcastModel> cityNames = [];
 
   bool savedLocatonListVisible = true;
 
@@ -59,7 +62,7 @@ class CityListProvider extends ChangeNotifier {
     if (model != null) {
       if (_savedLocation
           .any((element) => element.location!.name == model.location!.name)) {
-            getCityList.clear();
+        getCityList.clear();
         return;
       } else {
         _savedLocation.add(model);
@@ -68,16 +71,33 @@ class CityListProvider extends ChangeNotifier {
     }
   }
 
-  Future <void> writeToSharedPref(String cityName )async{
+  Future<void> writeToSharedPref(String cityName) async {
     final pref = await SharedPreferences.getInstance();
-    await pref.setStringList('city', <String>['Dhaka','Khulna']);
+    List<String> tempCityList = [];
+    final List<String> items = pref.getStringList('city')?? [];
+    if(items.isEmpty){
+    tempCityList.add(cityName);
+    await pref.setStringList('city', tempCityList);
+    }else{
+      tempCityList = items;
+      tempCityList.add(cityName);
+      await pref.setStringList('city', tempCityList);
+    }
   }
 
-  Future <void> readFromSharedPref()async{
+  Future<void> readFromSharedPref(
+      HourlyForcastProvider hourlyForcastProvider) async {
     final pref = await SharedPreferences.getInstance();
-    final List<String>? items = pref.getStringList('city');
-    cityNames = items ?? [];
-    print(cityNames.length);
-    notifyListeners();
+    final List<String> items = pref.getStringList('city')?? [];
+    print(items.length);
+    for (var i = 0; i < items.length; i++) {
+      final response = await RemoteRepo.getHourlyWeatherForcast(items[i], 1);
+      if (response!.statusCode == 200) {
+        var data = json.decode(response.body);
+        responseModel = HourlyForcastModel.fromJson(data);
+        _savedLocation.add(responseModel!);
+        notifyListeners();
+      }
+    }
   }
 }

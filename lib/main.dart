@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather/presentation/pages/details_page.dart';
 import 'controller/city_list_provider.dart';
 import 'controller/hourly_forcast_provider.dart';
 import 'controller/realtime_provider.dart';
 import 'presentation/pages/home_page.dart';
 import 'presentation/pages/search_page.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => RealtimeProvider(),
@@ -35,8 +37,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SearchPage(),
-        '/homePage': (context) =>const HomePage(),
-        '/searchPage': (context) =>const SearchPage(),
+        HomePage.routeName : (context) =>const HomePage(),
+        DetailsPage.routeName :(context) => const DetailsPage(),
       },
     );
   }

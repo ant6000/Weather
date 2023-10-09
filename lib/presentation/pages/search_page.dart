@@ -13,17 +13,29 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  bool flag = true;
+
   @override
   void initState() {
     super.initState();
-
+    print('here');
     WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
-       final hourlyForcastProvider =
-          Provider.of<HourlyForcastProvider>(context, listen: false);
-      final cityListProvider =
-          Provider.of<CityListProvider>(context, listen: false);
-    cityListProvider.readFromSharedPref();
+      load();
     });
+  }
+
+  load() {
+   // flag = false;
+    final hourlyForcastProvider =
+        Provider.of<HourlyForcastProvider>(context, listen: false);
+    final cityListProvider =
+        Provider.of<CityListProvider>(context, listen: false);
+    if (flag == true) {
+      print('object');
+      //cityListProvider.writeToSharedPref();
+      cityListProvider.readFromSharedPref(hourlyForcastProvider);
+      flag = false;
+    }
   }
 
   final cityNameInputController = TextEditingController();
@@ -31,19 +43,19 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<CityListProvider, HourlyForcastProvider>(
-        builder: (context, cityListProvider, forcastProvider, _) {
-      return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          actions: const [
-            Icon(Icons.settings_rounded),
-            SizedBox(width: 20),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: const [
+          Icon(Icons.settings_rounded),
+          SizedBox(width: 20),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Consumer2<CityListProvider, HourlyForcastProvider>(
+            builder: (context, cityListProvider, forcastProvider, _) {
+          return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -105,7 +117,7 @@ class _SearchPageState extends State<SearchPage> {
                               context: context,
                               builder: (context) {
                                 return showbottomsheet(
-                                    cityListProvider, forcastProvider);
+                                    cityListProvider, forcastProvider, index);
                               },
                             );
                           },
@@ -145,14 +157,14 @@ class _SearchPageState extends State<SearchPage> {
                 )
               ],
             ),
-          ),
-        ),
-      );
-    });
+          );
+        }),
+      ),
+    );
   }
 
   Widget showbottomsheet(CityListProvider cityListProvider,
-      HourlyForcastProvider hourlyForcastProvider) {
+      HourlyForcastProvider hourlyForcastProvider, int index) {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -175,6 +187,7 @@ class _SearchPageState extends State<SearchPage> {
                   onPressed: () {
                     cityListProvider
                         .addToSavedList(hourlyForcastProvider.responseModel);
+                        cityListProvider.writeToSharedPref(cityListProvider.getCityList[index].name.toString());
                     cityListProvider.getCityList.clear();
                     cityNameInputController.clear();
                     Navigator.pop(context);
