@@ -16,15 +16,13 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
-      // RealtimeProvider realtimeProvider =
-      //     Provider.of<RealtimeProvider>(context, listen: false);
-      // CityListProvider cityListProvider =
-      //     Provider.of<CityListProvider>(context, listen: false);
-      // for (var element in cityListProvider.getCityList) {
-      //   realtimeProvider.callRealTimeForcastApi(element.name.toString());
-      // }
-      // realtimeProvider.callRealTimeForcastApi(lat, lon);
+       final hourlyForcastProvider =
+          Provider.of<HourlyForcastProvider>(context, listen: false);
+      final cityListProvider =
+          Provider.of<CityListProvider>(context, listen: false);
+    cityListProvider.readFromSharedPref();
     });
   }
 

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:weather/controller/city_list_provider.dart';
 import 'package:weather/controller/hourly_forcast_provider.dart';
 import 'package:weather/controller/realtime_provider.dart';
-import 'package:weather/presentation/widgets/3days_forcast.dart';
+import 'package:weather/presentation/widgets/three_days_forcast.dart';
 import 'package:weather/presentation/widgets/grid_tile.dart';
 import 'package:weather/presentation/widgets/hourly_forcast.dart';
 

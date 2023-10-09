@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather/data/model/city_list_response_model.dart';
 import 'package:weather/data/model/forcast_response_model.dart';
-import 'package:weather/data/model/realtime_response_model.dart';
-import 'package:weather/data/model/saved_tile_model.dart';
 import 'package:weather/data/repository/remote_repo.dart';
 
 class CityListProvider extends ChangeNotifier {
@@ -18,11 +17,14 @@ class CityListProvider extends ChangeNotifier {
   final List<HourlyForcastModel> _savedLocation = [];
   List<HourlyForcastModel> get getSavedLocation => _savedLocation;
 
+  List<String> cityNames = [];
+
   bool savedLocatonListVisible = true;
 
   showlist() {
     if (getCityList.isEmpty) {
       return _savedLocation.length;
+      //return cityNames.length;
     } else {
       return 0;
     }
@@ -54,11 +56,28 @@ class CityListProvider extends ChangeNotifier {
   }
 
   void addToSavedList(HourlyForcastModel? model) {
-    if(model != null){
-    _savedLocation.add(model);
-    notifyListeners();
+    if (model != null) {
+      if (_savedLocation
+          .any((element) => element.location!.name == model.location!.name)) {
+            getCityList.clear();
+        return;
+      } else {
+        _savedLocation.add(model);
+        notifyListeners();
+      }
     }
   }
 
+  Future <void> writeToSharedPref(String cityName )async{
+    final pref = await SharedPreferences.getInstance();
+    await pref.setStringList('city', <String>['Dhaka','Khulna']);
+  }
 
+  Future <void> readFromSharedPref()async{
+    final pref = await SharedPreferences.getInstance();
+    final List<String>? items = pref.getStringList('city');
+    cityNames = items ?? [];
+    print(cityNames.length);
+    notifyListeners();
+  }
 }

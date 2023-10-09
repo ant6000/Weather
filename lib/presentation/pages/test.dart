@@ -45,7 +45,7 @@ class _MyWidgetState extends State<MyWidget> {
               GridView(
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
-                physics: NeverScrollableScrollPhysics(),
+                physics:const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 1,
