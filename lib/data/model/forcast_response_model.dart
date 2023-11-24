@@ -5,7 +5,7 @@ class HourlyForcastModel {
 
   HourlyForcastModel({this.location, this.current, this.forecast});
 
-  HourlyForcastModel.fromJson(Map<String, dynamic> json) {
+  HourlyForcastModel.fromJson(Map<dynamic, dynamic> json) {
     location = json['location'] != null
         ? Location.fromJson(json['location'])
         : null;
@@ -16,8 +16,8 @@ class HourlyForcastModel {
         : null;
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+  Map<dynamic, dynamic> toJson() {
+    final Map<dynamic, dynamic> data = <dynamic, dynamic>{};
     if (location != null) {
       data['location'] = location!.toJson();
     }
@@ -32,14 +32,14 @@ class HourlyForcastModel {
 }
 
 class Location {
-  String? name;
-  String? region;
-  String? country;
+  dynamic? name;
+  dynamic? region;
+  dynamic? country;
   double? lat;
   double? lon;
-  String? tzId;
+  dynamic? tzId;
   dynamic localtimeEpoch;
-  String? localtime;
+  dynamic? localtime;
 
   Location(
       {this.name,
@@ -51,7 +51,7 @@ class Location {
       this.localtimeEpoch,
       this.localtime});
 
-  Location.fromJson(Map<String, dynamic> json) {
+  Location.fromJson(Map<dynamic, dynamic> json) {
     name = json['name'];
     region = json['region'];
     country = json['country'];
@@ -62,8 +62,8 @@ class Location {
     localtime = json['localtime'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+  Map<dynamic, dynamic> toJson() {
+    final Map<dynamic, dynamic> data = <dynamic, dynamic>{};
     data['name'] = this.name;
     data['region'] = this.region;
     data['country'] = this.country;
@@ -78,7 +78,7 @@ class Location {
 
 class Current {
   dynamic lastUpdatedEpoch;
-  String? lastUpdated;
+  dynamic? lastUpdated;
   double? tempC;
   double? tempF;
   dynamic isDay;
@@ -86,7 +86,7 @@ class Current {
   double? windMph;
   double? windKph;
   dynamic windDegree;
-  String? windDir;
+  dynamic? windDir;
   dynamic pressureMb;
   double? pressureIn;
   dynamic precipMm;
@@ -126,7 +126,7 @@ class Current {
       this.gustMph,
       this.gustKph});
 
-  Current.fromJson(Map<String, dynamic> json) {
+  Current.fromJson(Map<dynamic, dynamic> json) {
     lastUpdatedEpoch = json['last_updated_epoch'];
     lastUpdated = json['last_updated'];
     tempC = json['temp_c'];
@@ -154,8 +154,8 @@ class Current {
     gustKph = json['gust_kph'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+  Map<dynamic, dynamic> toJson() {
+    final Map<dynamic, dynamic> data = <dynamic, dynamic>{};
     data['last_updated_epoch'] = this.lastUpdatedEpoch;
     data['last_updated'] = this.lastUpdated;
     data['temp_c'] = this.tempC;
@@ -186,20 +186,20 @@ class Current {
 }
 
 class Condition {
-  String? text;
-  String? icon;
+  dynamic? text;
+  dynamic? icon;
   dynamic code;
 
   Condition({this.text, this.icon, this.code});
 
-  Condition.fromJson(Map<String, dynamic> json) {
+  Condition.fromJson(Map<dynamic, dynamic> json) {
     text = json['text'];
     icon = json['icon'];
     code = json['code'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+  Map<dynamic, dynamic> toJson() {
+    final Map<dynamic, dynamic> data = <dynamic, dynamic>{};
     data['text'] = this.text;
     data['icon'] = this.icon;
     data['code'] = this.code;
@@ -212,7 +212,7 @@ class Forecast {
 
   Forecast({this.forecastday});
 
-  Forecast.fromJson(Map<String, dynamic> json) {
+  Forecast.fromJson(Map<dynamic, dynamic> json) {
     if (json['forecastday'] != null) {
       forecastday = <Forecastday>[];
       json['forecastday'].forEach((v) {
@@ -221,8 +221,8 @@ class Forecast {
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+  Map<dynamic, dynamic> toJson() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     if (this.forecastday != null) {
       data['forecastday'] = this.forecastday!.map((v) => v.toJson()).toList();
     }
@@ -231,7 +231,7 @@ class Forecast {
 }
 
 class Forecastday {
-  String? date;
+  dynamic? date;
   dynamic dateEpoch;
   Day? day;
   Astro? astro;
@@ -239,7 +239,7 @@ class Forecastday {
 
   Forecastday({this.date, this.dateEpoch, this.day, this.astro, this.hour});
 
-  Forecastday.fromJson(Map<String, dynamic> json) {
+  Forecastday.fromJson(Map<dynamic, dynamic> json) {
     date = json['date'];
     dateEpoch = json['date_epoch'];
     day = json['day'] != null ? new Day.fromJson(json['day']) : null;
@@ -252,8 +252,8 @@ class Forecastday {
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+  Map<dynamic, dynamic> toJson() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     data['date'] = this.date;
     data['date_epoch'] = this.dateEpoch;
     if (this.day != null) {
@@ -313,7 +313,7 @@ class Day {
       this.condition,
       this.uv});
 
-  Day.fromJson(Map<String, dynamic> json) {
+  Day.fromJson(Map<dynamic, dynamic> json) {
     maxtempC = json['maxtemp_c'];
     maxtempF = json['maxtemp_f'];
     mintempC = json['mintemp_c'];
@@ -338,8 +338,8 @@ class Day {
     uv = json['uv'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+  Map<dynamic, dynamic> toJson() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     data['maxtemp_c'] = this.maxtempC;
     data['maxtemp_f'] = this.maxtempF;
     data['mintemp_c'] = this.mintempC;
@@ -367,12 +367,12 @@ class Day {
 }
 
 class Astro {
-  String? sunrise;
-  String? sunset;
-  String? moonrise;
-  String? moonset;
-  String? moonPhase;
-  String? moonIllumination;
+  dynamic? sunrise;
+  dynamic? sunset;
+  dynamic? moonrise;
+  dynamic? moonset;
+  dynamic? moonPhase;
+  dynamic? moonIllumination;
   dynamic isMoonUp;
   dynamic isSunUp;
 
@@ -386,7 +386,7 @@ class Astro {
       this.isMoonUp,
       this.isSunUp});
 
-  Astro.fromJson(Map<String, dynamic> json) {
+  Astro.fromJson(Map<dynamic, dynamic> json) {
     sunrise = json['sunrise'];
     sunset = json['sunset'];
     moonrise = json['moonrise'];
@@ -397,8 +397,8 @@ class Astro {
     isSunUp = json['is_sun_up'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+  Map<dynamic, dynamic> toJson() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
     data['sunrise'] = this.sunrise;
     data['sunset'] = this.sunset;
     data['moonrise'] = this.moonrise;
@@ -413,7 +413,7 @@ class Astro {
 
 class Hour {
   dynamic timeEpoch;
-  String? time;
+  dynamic? time;
   double? tempC;
   double? tempF;
   dynamic isDay;
@@ -421,7 +421,7 @@ class Hour {
   double? windMph;
   double? windKph;
   dynamic windDegree;
-  String? windDir;
+  dynamic? windDir;
   dynamic pressureMb;
   double? pressureIn;
   dynamic precipMm;
@@ -481,7 +481,7 @@ class Hour {
       this.gustKph,
       this.uv});
 
-  Hour.fromJson(Map<String, dynamic> json) {
+  Hour.fromJson(Map<dynamic, dynamic> json) {
     timeEpoch = json['time_epoch'];
     time = json['time'];
     tempC = json['temp_c'];
@@ -519,8 +519,8 @@ class Hour {
     uv = json['uv'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+  Map<dynamic, dynamic> toJson() {
+    final Map<dynamic, dynamic> data = <dynamic, dynamic>{};
     data['time_epoch'] = timeEpoch;
     data['time'] = this.time;
     data['temp_c'] = this.tempC;

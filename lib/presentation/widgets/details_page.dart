@@ -140,88 +140,88 @@ class _DisplayWeatherDataState extends State<DisplayWeatherData> {
                     ////////////////////////////////////////////
                     ///this container for hourly frocast update
                     ///////////////////////////////////////////
-                    Container(
-                      height: MediaQuery.of(context).size.width * 0.6,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.black26,
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(left: 10, right: 10, top: 10),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Cloudy conditions rain expected around 5PM',
-                              style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                              ),
-                            ),
-                            const Divider(),
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount:
-                                    24, // Change this to 24 to include all 24 hours
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  final formattedHour = getNext24Hours()[
-                                      index]; // Get individual hour
-                                  final parsedTime =
-                                      DateFormat('h a').parse(formattedHour);
-                                  final hour = parsedTime
-                                      .hour; // This will give you the hour component as an integer (0-23)
-                                  double? hourlyWeather;
-                                  double? chancesOfRain;
-                                  if (formattedHour == '12 AM' && index > 0) {
-                                    hourlyWeather = hourlyForcastprovider
-                                        .responseModel
-                                        ?.forecast
-                                        ?.forecastday?[1]
-                                        .hour?[hour]
-                                        .tempC;
-                                    chancesOfRain = hourlyForcastprovider
-                                            .responseModel
-                                            ?.forecast
-                                            ?.forecastday?[1]
-                                            .hour?[hour]
-                                            .cloud;
-                                  } else {
-                                    hourlyWeather = hourlyForcastprovider
-                                        .responseModel
-                                        ?.forecast
-                                        ?.forecastday?[0]
-                                        .hour?[hour]
-                                        .tempC;
-                                    chancesOfRain = hourlyForcastprovider
-                                            .responseModel
-                                            ?.forecast
-                                            ?.forecastday?[0]
-                                            .hour?[hour]
-                                            .chanceOfRain;
-                                  }
-                                  return HourlyForcast(
-                                    time: formattedHour,
-                                    temp: hourlyWeather ?? 0.0,
-                                    chanceOfRain: chancesOfRain ?? 0.0,
-                                    icon: Icons.thunderstorm_rounded,
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   height: MediaQuery.of(context).size.width * 0.6,
+                    //   width: double.infinity,
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(20),
+                    //     color: Colors.black26,
+                    //   ),
+                    //   child: Padding(
+                    //     padding:
+                    //         const EdgeInsets.only(left: 10, right: 10, top: 10),
+                    //     child: Column(
+                    //       children: [
+                    //         Text(
+                    //           'Cloudy conditions rain expected around 5PM',
+                    //           style: TextStyle(
+                    //             fontSize:
+                    //                 MediaQuery.of(context).size.width * 0.05,
+                    //           ),
+                    //         ),
+                    //         const Divider(),
+                    //         Expanded(
+                    //           child: ListView.builder(
+                    //             itemCount:
+                    //                 24, // Change this to 24 to include all 24 hours
+                    //             shrinkWrap: true,
+                    //             scrollDirection: Axis.horizontal,
+                    //             itemBuilder: (context, index) {
+                    //               final formattedHour = getNext24Hours()[
+                    //                   index]; // Get individual hour
+                    //               final parsedTime =
+                    //                   DateFormat('h a').parse(formattedHour);
+                    //               final hour = parsedTime
+                    //                   .hour; // This will give you the hour component as an integer (0-23)
+                    //               double? hourlyWeather;
+                    //               double? chancesOfRain;
+                    //               if (formattedHour == '12 AM' && index > 0) {
+                    //                 hourlyWeather = hourlyForcastprovider
+                    //                     .responseModel
+                    //                     ?.forecast
+                    //                     ?.forecastday?[1]
+                    //                     .hour?[hour]
+                    //                     .tempC;
+                    //                 chancesOfRain = hourlyForcastprovider
+                    //                         .responseModel
+                    //                         ?.forecast
+                    //                         ?.forecastday?[1]
+                    //                         .hour?[hour]
+                    //                         .cloud;
+                    //               } else {
+                    //                 hourlyWeather = hourlyForcastprovider
+                    //                     .responseModel
+                    //                     ?.forecast
+                    //                     ?.forecastday?[0]
+                    //                     .hour?[hour]
+                    //                     .tempC;
+                    //                 chancesOfRain = hourlyForcastprovider
+                    //                         .responseModel
+                    //                         ?.forecast
+                    //                         ?.forecastday?[0]
+                    //                         .hour?[hour]
+                    //                         .chanceOfRain;
+                    //               }
+                    //               return HourlyForcast(
+                    //                 time: formattedHour,
+                    //                 temp: hourlyWeather ?? 0.0,
+                    //                 chanceOfRain: chancesOfRain ?? 0.0,
+                    //                 icon: Icons.thunderstorm_rounded,
+                    //               );
+                    //             },
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
 
                     const SizedBox(height: 20),
                     //////////////////////////////////////////////////
                     /// this container block for show 3 days forcasts
                     ////////////////////////////////////////////////
                     Container(
-                      height: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.width * 0.6,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),

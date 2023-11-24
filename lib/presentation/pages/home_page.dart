@@ -13,21 +13,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const DisplayWeatherData(),
-      bottomNavigationBar: BottomAppBar(
-        height: 50,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pushReplacementNamed(context, '/searchPage');
-              },
-              child: const Icon(Icons.list),
-            )
-          ],
-        ),
+      appBar: AppBar(title: Text('Weather',style: TextStyle(color: Colors.white),),
+      centerTitle: true,
+      backgroundColor: Colors.blueAccent,
       ),
+      body: const DisplayWeatherData(),
+      
     );
   }
 }

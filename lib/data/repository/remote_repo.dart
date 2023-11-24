@@ -9,7 +9,7 @@ class RemoteRepo {
       final url = Uri.parse(
           'https://weatherapi-com.p.rapidapi.com/current.json?q=$city');
       Map<String, String> header = {
-        'X-RapidAPI-Key': 'a2b133090bmsh71717a3b54feb8ap153d28jsncba845fef55e',
+        'X-RapidAPI-Key': '54ad5c91f6msh18ad6b8e379e700p114248jsnbe0e2a9381df',
         'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
       };
 
@@ -28,7 +28,7 @@ class RemoteRepo {
       final url = Uri.parse(
           'https://weatherapi-com.p.rapidapi.com/forecast.json?q=$city&days=$days');
       Map<String, String> header = {
-        'X-RapidAPI-Key': 'a2b133090bmsh71717a3b54feb8ap153d28jsncba845fef55e',
+        'X-RapidAPI-Key': '54ad5c91f6msh18ad6b8e379e700p114248jsnbe0e2a9381df',
         'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
       };
       final response = await get(url, headers: header);
@@ -45,7 +45,7 @@ class RemoteRepo {
       final url = Uri.parse(
           'https://weatherapi-com.p.rapidapi.com/search.json?q=$city');
       Map<String, String> header = {
-        'X-RapidAPI-Key': 'a2b133090bmsh71717a3b54feb8ap153d28jsncba845fef55e',
+        'X-RapidAPI-Key': '54ad5c91f6msh18ad6b8e379e700p114248jsnbe0e2a9381df',
         'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
       };
       final response = await get(url, headers: header);

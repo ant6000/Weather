@@ -57,7 +57,7 @@ class ThreeDaysForcast extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        //const SizedBox(height: 10),
       ],
     );
   }

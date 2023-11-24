@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weather/presentation/pages/details_page.dart';
 import 'controller/city_list_provider.dart';
 import 'controller/hourly_forcast_provider.dart';
 import 'controller/realtime_provider.dart';
@@ -38,7 +37,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const SearchPage(),
         HomePage.routeName : (context) =>const HomePage(),
-        DetailsPage.routeName :(context) => const DetailsPage(),
+        SearchPage.routeName : (context) =>const SearchPage(),
+
       },
     );
   }
